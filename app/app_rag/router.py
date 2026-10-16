@@ -1,16 +1,19 @@
 import json
 
-from app.VectorStorage import get_embedding, VectorStore
-from app.chunker import Chunker
-import ollama
+from fastapi import APIRouter
+
+from app.utils.storage import get_vector_storage
+from app.app_rag.chunker import Chunker
 
 from app.utils.settings import settings
 
+router = APIRouter(prefix="/train")
 
+
+@router.post("")
 def main():
     chunker = Chunker()
-    MODEL = "bge-m3"
-    store = VectorStore(embed_model=MODEL)
+    store = get_vector_storage()
 
 
     with open(settings.articles_json_path, encoding="utf-8") as f:
@@ -23,7 +26,8 @@ def main():
                 )
             print(article["title"])
 
-    store.save(settings.articles_place_path)
+    store.save(settings.articles_placefolder_path)
+    return {"chunks": len(store.chunks)}
 
 
 if __name__ == "__main__":
