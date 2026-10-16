@@ -220,3 +220,6 @@ __marimo__/
 .streamlit/secrets.toml
 
 .idea
+data/wiki_index.pkl
+data/wiki/*.txt
+data/wiki/articles.jsonl
